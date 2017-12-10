@@ -2,7 +2,8 @@ package config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.Value;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -12,18 +13,19 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@PropertySource(value = "db/db.properties")
+@PropertySource({"classpath:db/db.properties"})
 public class DataSourceConfig {
 
 
+    @Value("${driverClassName}")
+    private String driverClassName;
     @Value("${url}")
     private String url;
     @Value("${username}")
     private String username;
     @Value("${password}")
     private String password;
-    @Value("${driverClassName}")
-    private String driverClassName;
+
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {

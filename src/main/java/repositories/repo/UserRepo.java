@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface UserRepo {
 
-    List<User> findAll();
+    List findAll();
 
     User findById(Long id);
 

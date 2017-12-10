@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="user" class="entities.User">
+        <property name="email" value="user@user.com"/>
+        <property name="password" value="password"/>
+    </bean>
+
+
+    <bean id="tag" class="entities.Tag">
+        <property name="name" value="tag"/>
+    </bean>
+
+
+    <bean id="note" class="entities.Note">
+        <property name="name" value="new note"/>
+        <property name="content" value="new content"/>
+    </bean>
+
+
+    <bean id="notebook" class="entities.Notebook">
+        <property name="name" value="new note"/>
+        <property name="user" ref="user"/>
+    </bean>
+
+</beans>
