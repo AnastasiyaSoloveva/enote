@@ -13,9 +13,9 @@ import java.util.Set;
 public class User {
 
     @Id
-    @Column(name="id", nullable = false)
+    @Column(updatable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @NotEmpty
     @Column(name="email", nullable = false, unique = true)
@@ -27,9 +27,14 @@ public class User {
 
     @NotEmpty
     @Column(name="is_active", nullable = false)
-    private long isActive;
+    private Long isActive;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
     private Set<Notebook> notebooks = new HashSet<>();
+
+    public boolean addNotebook(Notebook notebook) {
+        notebook.setUser(this);
+        return notebooks.add(notebook);
+    }
 
 }

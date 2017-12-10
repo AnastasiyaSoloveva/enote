@@ -18,16 +18,16 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@PropertySource(value = "db/db.properties")
+@PropertySource({"classpath:db/db.properties"})
 public class TestDataSourceConfig {
 
-    @Value("${spring.datasource.driverClassName}")
+    @Value("${driverClassName}")
     private String driverClassName;
     @Value("${url}")
     private String url;
-    @Value("${spring.datasource.username}")
+    @Value("${username}")
     private String username;
-    @Value("${spring.datasource.password}")
+    @Value("${password}")
     private String password;
 
     @Bean
@@ -75,15 +75,11 @@ public class TestDataSourceConfig {
     @Bean
     public SessionFactory sessionFactory() {
         return new LocalSessionFactoryBuilder(dataSource())
-                .scanPackages("")
+                .scanPackages("entities")
                 .addProperties(hibernateProperties())
                 .buildSessionFactory();
 
-//        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
-//        sessionFactoryBean.setPackagesToScan("repositories");
-//        sessionFactoryBean.setHibernateProperties(hibernateProperties());
-//        sessionFactoryBean.setDataSource(dataSource());
-//        return sessionFactoryBean.getObject();
+
     }
 
     @Bean

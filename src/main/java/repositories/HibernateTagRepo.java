@@ -65,7 +65,6 @@ public class HibernateTagRepo  implements TagRepo{
     }
 
 
-
     @Override
     public void deleteById(Long tagId) {
         Tag tag = (Tag) session().createQuery("from Tag t where t.id = :id").

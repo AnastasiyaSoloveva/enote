@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 
-@Repository
+@Repository("UserRepo")
 @Transactional
 public class HibernateUserRepo implements UserRepo {
 
