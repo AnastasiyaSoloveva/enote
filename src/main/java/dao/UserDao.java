@@ -1,7 +1,9 @@
 package dao;
 
 import entities.User;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class UserDao implements AbstractDao<User>{
     public void deleteById(int id) {
 
