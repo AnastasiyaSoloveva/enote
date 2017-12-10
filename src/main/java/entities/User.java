@@ -25,9 +25,9 @@ public class User {
     @Column(name="password", nullable = false)
     private String password;
 
-    @NotEmpty
-    @Column(name="is_active", nullable = false)
-    private Long isActive;
+//    @NotEmpty
+//    @Column(name="is_active", nullable = false)
+//    private Long isActive;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
     private Set<Notebook> notebooks = new HashSet<>();

@@ -1,7 +1,7 @@
 package repositories;
 
 import config.AppConfig;
-import config.TestDataSourceConfig;
+
 import entities.Notebook;
 import entities.User;
 import org.junit.After;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import repositories.repo.UserRepo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,8 +22,6 @@ import java.util.List;
 import java.util.Set;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -144,19 +141,19 @@ public class HibernateUserRepoTest {
         User user = new User();
         user.setEmail("1111@mail.de");
         user.setPassword("1111");
-        user.setIsActive(1L);
+       // user.setIsActive(1L);
         users.add(user);
 
         user = new User();
         user.setEmail("2222@mail.de");
         user.setPassword("2222");
-        user.setIsActive(1L);
+       // user.setIsActive(1L);
         users.add(user);
 
         user = new User();
         user.setEmail("3333@mail.de");
         user.setPassword("3333");
-        user.setIsActive(1L);
+       // user.setIsActive(1L);
         users.add(user);
     }
 
