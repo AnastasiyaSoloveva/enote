@@ -1,35 +1,68 @@
 package config;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import lombok.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@PropertySource(value = "db/db.properties")
 public class DataSourceConfig {
+
+
+    @Value("${url}")
+    private String url;
+    @Value("${username}")
+    private String username;
+    @Value("${password}")
+    private String password;
+    @Value("${driverClassName}")
+    private String driverClassName;
+
     @Bean
-    public Properties dbProps(){
-        Properties p = new Properties();
-        p.setProperty("driverClassName", "org.h2.Driver");
-        p.setProperty("url", "jdbc:h2:~/sample");
-        p.setProperty("username", "sample");
-        p.setProperty("password", "sample");
-        return p;
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean(destroyMethod = "close")
+    public DataSource dataSource() {
+        try {
+            HikariConfig hikariConfig = new HikariConfig();
+            hikariConfig.setDriverClassName(driverClassName);
+            hikariConfig.setJdbcUrl(url);
+            hikariConfig.setUsername(username);
+            hikariConfig.setPassword(password);
+
+            hikariConfig.setMaximumPoolSize(5);
+            hikariConfig.setConnectionTestQuery("SELECT 1");
+            hikariConfig.setPoolName("springHikariCP");
+
+            hikariConfig.addDataSourceProperty("dataSource.cachePrepStmts", "true");
+            hikariConfig.addDataSourceProperty("dataSource.prepStmtCacheSize", "250");
+            hikariConfig.addDataSourceProperty("dataSource.prepStmtCacheSqlLimit", "2048");
+            hikariConfig.addDataSourceProperty("dataSource.useServerPrepStmts", "true");
+
+            HikariDataSource dataSource = new HikariDataSource(hikariConfig);
+            return dataSource;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Bean
-    public DataSource dataSource(@Value("#{dbProps.driverClassName}")String driverClassName,
-                                 @Value("#{dbProps.url}")String url,
-                                 @Value("#{dbProps.username}")String username,
-                                 @Value("#{dbProps.password}")String password)  {
-        DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName(driverClassName);
-        ds.setUrl(url);
-        ds.setUsername(username);
-        ds.setPassword(password);
-        return ds;
+    public Properties hibernateProperties() {
+        Properties hibernateProp = new Properties();
+        hibernateProp.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        hibernateProp.put("hibernate.hbm2ddl.auto", "create-drop");
+        hibernateProp.put("hibernate.format_sql", true);
+        hibernateProp.put("hibernate.show_sql", true);
+        return hibernateProp;
     }
+
 }
