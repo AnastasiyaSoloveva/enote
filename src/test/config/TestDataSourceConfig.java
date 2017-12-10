@@ -2,28 +2,33 @@ package config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.HibernateExceptionTranslator;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
 @PropertySource(value = "db/db.properties")
-public class DataSourceConfig {
+public class TestDataSourceConfig {
 
-
+    @Value("${spring.datasource.driverClassName}")
+    private String driverClassName;
     @Value("${url}")
     private String url;
     @Value("${spring.datasource.username}")
     private String username;
     @Value("${spring.datasource.password}")
     private String password;
-    @Value("${spring.datasource.driverClassName}")
-    private String driverClassName;
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -61,8 +66,38 @@ public class DataSourceConfig {
         hibernateProp.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         hibernateProp.put("hibernate.hbm2ddl.auto", "create-drop");
         hibernateProp.put("hibernate.format_sql", true);
+        hibernateProp.put("hibernate.use_sql_comments", true);
         hibernateProp.put("hibernate.show_sql", true);
         return hibernateProp;
     }
 
+
+    @Bean
+    public SessionFactory sessionFactory() {
+        return new LocalSessionFactoryBuilder(dataSource())
+                .scanPackages("")
+                .addProperties(hibernateProperties())
+                .buildSessionFactory();
+
+//        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+//        sessionFactoryBean.setPackagesToScan("repositories");
+//        sessionFactoryBean.setHibernateProperties(hibernateProperties());
+//        sessionFactoryBean.setDataSource(dataSource());
+//        return sessionFactoryBean.getObject();
+    }
+
+    @Bean
+    public HibernateTransactionManager transactionManager() {
+        return new HibernateTransactionManager(sessionFactory());
+    }
+
+        @Bean
+    public PersistenceExceptionTranslationPostProcessor petpp() {
+        return new PersistenceExceptionTranslationPostProcessor();
+    }
+
+    @Bean
+    public HibernateExceptionTranslator hibernateExceptionTranslator() {
+        return new HibernateExceptionTranslator();
+    }
 }

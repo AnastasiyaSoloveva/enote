@@ -27,7 +27,7 @@ public class User {
 
     @NotEmpty
     @Column(name="is_active", nullable = false)
-    private boolean isActive;
+    private long isActive;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.ALL})
     private Set<Notebook> notebooks = new HashSet<>();
