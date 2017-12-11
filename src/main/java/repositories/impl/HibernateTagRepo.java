@@ -1,17 +1,17 @@
-package repositories;
+package repositories.impl;
 
 import entities.Tag;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import repositories.repo.TagRepo;
+import repositories.TagRepo;
 
 import java.util.List;
 import java.util.Set;
 
 @Repository
-public class HibernateTagRepo  implements TagRepo{
+public class HibernateTagRepo  implements TagRepo {
 
 
     @Autowired
