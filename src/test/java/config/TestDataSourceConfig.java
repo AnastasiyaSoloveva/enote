@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@PropertySource({"classpath:db/db.properties"})
+@PropertySource({"classpath:db.properties"})
 public class TestDataSourceConfig {
 
     @Value("${driverClassName}")

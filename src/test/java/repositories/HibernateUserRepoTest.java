@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNull;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestDataSourceConfig.class, AppConfig.class})
+@ContextConfiguration(classes = {AppConfig.class})
 @Transactional
 public class HibernateUserRepoTest {
 
