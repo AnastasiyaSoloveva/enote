@@ -52,7 +52,7 @@ public class HibernateUserRepo implements UserRepo {
 
     @Override
     public String findEmailById(Long id) {
-        return (String) session().createQuery("select u.username from User u where u.id= :id").
+        return (String) session().createQuery("select u.email from User u where u.id= :id").
                 setParameter("id", id).uniqueResult();
     }
 
